@@ -1,0 +1,9 @@
+Source: TM-php
+Package: TM-php
+Priority: optional
+Version: 8.2.0
+Section: web
+Maintainer: CloudVision Ltd.
+Homepage: https://www.to2mor.com
+Architecture: amd64
+Description: TM Panel PHP SDK

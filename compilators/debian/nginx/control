@@ -1,0 +1,9 @@
+Source: TM-nginx
+Package: TM-nginx
+Priority: optional
+Version: 1.22.0
+Section: web
+Maintainer: CloudVision Ltd.
+Homepage: https://www.to2mor.com
+Architecture: amd64
+Description: TM Panel Nginx Web Server

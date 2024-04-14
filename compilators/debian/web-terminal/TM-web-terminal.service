@@ -1,0 +1,16 @@
+[Unit]
+Description=TM Web Terminal
+Documentation=https://to2mor.com/docs/
+After=network.target
+
+[Service]
+User=root
+Group=TM-users
+Environment=NODE_ENV=production
+Environment=TM=/usr/local/TM
+ExecStart=/usr/local/TM/web-terminal/server.js
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,6 @@
+Defaults:root !requiretty
+
+# sudo is limited to TMPanel scripts
+# TMweb   ALL=NOPASSWD:/usr/local/TM/bin/*
+
+TMweb ALL=(ALL) NOPASSWD: ALL

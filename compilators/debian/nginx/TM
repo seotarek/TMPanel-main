@@ -1,0 +1,85 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:       TM
+#                 internal nginx
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the TM control panel
+# Description:       starts nginx & php-fpm using start-stop-daemon
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+NGINX_DAEMON=/usr/local/TM/nginx/sbin/TM-nginx
+NGINX_NAME=TM-nginx
+NGINX_DESC=TM-nginx
+NGINX_PID=/run/TM-nginx.pid
+NGINX_CONF=/usr/local/TM/nginx/conf/nginx.conf
+
+PHP_DAEMON=/usr/local/TM/php/sbin/TM-php-fpm
+PHP_NAME=TM-php
+PHP_DESC=TM-php
+PHP_PID=/run/TM-php.pid
+PHP_CONF=/usr/local/TM/php/etc/php-fpm.conf
+
+set -e
+
+start_nginx() {
+	start-stop-daemon --start --quiet --pidfile $NGINX_PID \
+		--retry 5 --exec $NGINX_DAEMON --oknodo
+}
+
+stop_nginx() {
+	start-stop-daemon --stop --quiet --pidfile $NGINX_PID \
+		--retry 5 --oknodo --exec $NGINX_DAEMON
+}
+
+start_php() {
+	start-stop-daemon --start --quiet --pidfile $PHP_PID \
+		--retry 5 --startas /bin/bash -- -c "exec $PHP_DAEMON --allow-to-run-as-root" --oknodo
+}
+
+stop_php() {
+	start-stop-daemon --stop --quiet --pidfile $PHP_PID \
+		--retry 5 --oknodo --exec $PHP_DAEMON
+}
+
+case "$1" in
+	start)
+
+		start_nginx
+		start_php
+
+		;;
+
+	stop)
+
+		stop_nginx
+		stop_php
+
+		;;
+
+	restart | force-reload | reload | configtest | testconfig)
+
+		stop_nginx
+		stop_php
+		sleep 1
+		start_nginx
+		start_php
+
+		;;
+
+	status)
+		status_of_proc -p $NGINX_PID "$NGINX_DAEMON" TM-nginx
+		status_of_proc -p $PHP_PID "$PHP_DAEMON" TM-php
+		;;
+
+	*)
+		echo "Usage: TM {start|stop|restart|status}" >&2
+		exit 1
+		;;
+esac
+
+exit 0

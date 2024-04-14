@@ -1,0 +1,5 @@
+#!/bin/sh
+
+update-rc.d TM remove > /dev/null 2>&1
+
+exit 0
