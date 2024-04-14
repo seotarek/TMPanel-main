@@ -38,6 +38,5 @@ Server Clustering
 
 Easy Module Developing
 
-## Join to our discord group
-https://discord.gg/yfFWfrfwTZ
+## 
 
